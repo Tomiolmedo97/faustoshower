@@ -22,9 +22,9 @@ function Home() {
     <main className="relative mx-auto flex min-h-svh w-full max-w-lg flex-col items-center px-4 py-10 sm:px-6 sm:py-14">
       <h1 className="sr-only">Baby Shower de Fausto</h1>
 
-      <article className="invite-card invite-hero paper-in relative w-full px-5 pb-11 pt-6 sm:px-10 sm:pb-12">
+      <article className="invite-card invite-hero paper-in relative w-full px-5 pb-11 pt-12 sm:px-10 sm:pb-12 sm:pt-14">
         <div
-          className="stagger-in mx-auto aspect-square w-[86%] max-w-sm"
+          className="stagger-in mx-auto aspect-square w-[68%] max-w-[16rem]"
           style={{ "--stagger": "120ms" } as CSSProperties}
         >
           <div className="bunny-float relative size-full">

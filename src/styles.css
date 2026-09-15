@@ -99,6 +99,9 @@
     border-top-right-radius: 999px;
     border-bottom-left-radius: var(--radius-xl);
     border-bottom-right-radius: var(--radius-xl);
+    overflow: hidden;
+    isolation: isolate;
+    clip-path: inset(0 round 999px 999px var(--radius-xl) var(--radius-xl));
   }
 
   /* Allura’s swashes sit outside the em box; clip + tight leading hide them. */
@@ -260,7 +263,7 @@
     transform: translateY(0) rotate(0deg);
   }
   50% {
-    transform: translateY(-7px) rotate(-0.55deg);
+    transform: translateY(-4px) rotate(-0.4deg);
   }
 }
 
