@@ -22,23 +22,21 @@ function Home() {
     <main className="relative mx-auto flex min-h-svh w-full max-w-lg flex-col items-center px-4 py-10 sm:px-6 sm:py-14">
       <h1 className="sr-only">Baby Shower de Fausto</h1>
 
-      <article className="invite-card invite-hero paper-in relative w-full px-5 pb-11 pt-12 sm:px-10 sm:pb-12 sm:pt-14">
+      <article className="invite-card invite-hero paper-in relative w-full pb-11 sm:pb-12">
         <div
-          className="stagger-in mx-auto aspect-square w-[68%] max-w-[16rem]"
+          className="stagger-in bunny-arch"
           style={{ "--stagger": "120ms" } as CSSProperties}
         >
-          <div className="bunny-float relative size-full">
-            <img
-              src="/bunny.jpg"
-              alt="Conejito en un autito verde con globos"
-              width={640}
-              height={640}
-              className="size-full object-contain object-center select-none"
-            />
-          </div>
+          <img
+            src="/bunny.jpg"
+            alt="Conejito en un autito verde con globos"
+            width={640}
+            height={640}
+            className="bunny-art bunny-float"
+          />
         </div>
 
-        <header className="mt-1 flex w-full flex-col items-center text-center">
+        <header className="mt-1 flex w-full flex-col items-center px-5 text-center sm:px-10">
           <p className="script-in script-heading w-full text-sage">
             Baby Shower
           </p>
@@ -55,7 +53,7 @@ function Home() {
           </h2>
         </header>
 
-        <div className="mx-auto mt-7 flex w-full max-w-xs flex-col items-center gap-5 text-center">
+        <div className="mx-auto mt-7 flex w-full max-w-xs flex-col items-center gap-5 px-5 text-center sm:px-10">
           <span
             className="hairline draw w-16"
             style={{ "--stagger": "980ms" } as CSSProperties}
@@ -88,7 +86,7 @@ function Home() {
         </div>
 
         <div
-          className="stagger-in mt-7 flex flex-wrap items-center justify-center gap-2"
+          className="stagger-in mt-7 flex flex-wrap items-center justify-center gap-2 px-5 sm:px-10"
           style={{ "--stagger": "1320ms" } as CSSProperties}
         >
           <Button variant="outline" className="px-4" asChild>
