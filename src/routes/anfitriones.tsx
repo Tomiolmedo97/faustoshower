@@ -79,7 +79,7 @@ function HostLock() {
 
       <article className="invite-card rounded-xl px-6 py-10 sm:px-10">
         <header className="text-center">
-          <p className="font-script text-4xl leading-none text-sage">
+          <p className="script-heading text-sage">
             Anfitriones
           </p>
           <p className="mt-3 font-serif text-base text-muted">
@@ -133,7 +133,7 @@ function HostAlbum({
 
       <article className="invite-card rounded-xl px-6 py-10 sm:px-10">
         <header className="text-center">
-          <p className="font-script text-4xl leading-none text-sage">
+          <p className="script-heading text-sage">
             Confirmaciones
           </p>
           <p className="mt-3 font-serif text-base text-muted">
@@ -167,7 +167,7 @@ function HostAlbum({
 
       <article className="invite-card mt-5 rounded-xl px-6 py-10 sm:px-10">
         <header className="text-center">
-          <p className="font-script text-4xl leading-none text-sage">
+          <p className="script-heading text-sage">
             Cartas para Fausto
           </p>
           <p className="mt-3 font-serif text-base text-muted">

@@ -62,7 +62,7 @@ export function Countdown() {
         <QuietNote script="Es hoy" body={`${EVENT.timeLabel} · ${EVENT.venue}`} />
       ) : (
         <div className="flex flex-col items-center text-center">
-          <p className="font-script text-4xl leading-none text-sage sm:text-5xl">
+          <p className="script-heading text-sage">
             Falta
           </p>
           <span className="hairline mt-5 w-16" />
@@ -94,7 +94,7 @@ export function Countdown() {
 function QuietNote({ script, body }: { script: string; body: string }) {
   return (
     <div className="flex flex-col items-center gap-3 py-2 text-center">
-      <p className="font-script text-4xl leading-none text-sage sm:text-5xl">
+      <p className="script-heading text-sage">
         {script}
       </p>
       <p className="font-serif text-lg text-muted">{body}</p>

@@ -74,7 +74,7 @@ export function RsvpForm() {
           <Check className="size-7" strokeWidth={1.75} />
         </span>
         <div className="space-y-2">
-          <p className="font-script text-4xl leading-none text-sage">
+          <p className="script-heading text-sage">
             {saved.attending ? "¡Te esperamos!" : "Gracias por avisarnos"}
           </p>
           <p className="font-serif text-lg text-pretty text-ink/80">

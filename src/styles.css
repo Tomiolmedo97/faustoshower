@@ -48,6 +48,7 @@
   body,
   #app {
     min-height: 100%;
+    overflow-x: clip;
   }
 
   body {
@@ -98,6 +99,18 @@
     border-top-right-radius: 999px;
     border-bottom-left-radius: var(--radius-xl);
     border-bottom-right-radius: var(--radius-xl);
+  }
+
+  /* Allura’s swashes sit outside the em box; clip + tight leading hide them. */
+  .script-heading {
+    font-family: var(--font-script);
+    font-size: clamp(1.85rem, 0.7rem + 6.2vw, 3.15rem);
+    line-height: 1.45;
+    padding-block: 0.18em 0.28em;
+    padding-inline: 0.2em;
+    overflow: visible;
+    max-width: 100%;
+    text-wrap: balance;
   }
 
   .hairline {
