@@ -1,0 +1,296 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #f4efe6;
+  --color-paper-deep: #ebe4d6;
+  --color-ink: #3f3a33;
+  --color-muted: #7a756c;
+  --color-sage: #6b7c6a;
+  --color-sage-deep: #556454;
+  --color-sage-soft: #8a9a87;
+  --color-gingham: #c5d0be;
+  --color-gingham-bg: #d5ddd0;
+  --color-brown: #8b5e3c;
+  --color-line: #d4cbba;
+
+  --font-script: "Allura", "Segoe Script", cursive;
+  --font-serif: "Cormorant Garamond", "Palatino Linotype", Palatino, serif;
+  --font-sans: "Cormorant Garamond", "Palatino Linotype", Palatino, serif;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 32px;
+
+  --tracking-invite: 0.16em;
+  --tracking-name: 0.2em;
+
+  --shadow-card:
+    0 1px 0 color-mix(in oklab, var(--color-ink) 6%, transparent),
+    0 22px 44px -22px color-mix(in oklab, var(--color-ink) 30%, transparent);
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-invite: cubic-bezier(0.4, 0.05, 0.2, 1);
+  --motion-quick: 150ms;
+  --motion-fast: 250ms;
+  --motion-slow: 400ms;
+  --motion-emphasis: 560ms;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html,
+  body,
+  #app {
+    min-height: 100%;
+  }
+
+  body {
+    background-color: var(--color-gingham-bg);
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+@layer components {
+  .gingham {
+    background-color: var(--color-gingham-bg);
+    background-image:
+      linear-gradient(
+        90deg,
+        color-mix(in oklab, var(--color-sage) 20%, transparent) 50%,
+        transparent 50%
+      ),
+      linear-gradient(
+        color-mix(in oklab, var(--color-sage) 20%, transparent) 50%,
+        transparent 50%
+      );
+    background-size: 22px 22px;
+  }
+
+  .invite-card {
+    background-color: var(--color-paper);
+    box-shadow: var(--shadow-card);
+  }
+
+  .invite-hero {
+    border-top-left-radius: 999px;
+    border-top-right-radius: 999px;
+    border-bottom-left-radius: var(--radius-xl);
+    border-bottom-right-radius: var(--radius-xl);
+  }
+
+  .hairline {
+    height: 1px;
+    background: color-mix(in oklab, var(--color-sage) 28%, transparent);
+  }
+
+  .paper-in {
+    animation: paper-in 1.05s var(--ease-invite) both;
+  }
+
+  .stagger-in {
+    animation: rise-in 700ms var(--ease-invite) both;
+    animation-delay: var(--stagger, 0ms);
+  }
+
+  .script-in {
+    animation: script-in 860ms var(--ease-invite) both;
+    animation-delay: var(--stagger, 180ms);
+  }
+
+  .letter-in {
+    display: inline-block;
+    animation: letter-in 680ms var(--ease-invite) both;
+  }
+
+  .letter-in:nth-child(1) {
+    animation-delay: 480ms;
+  }
+  .letter-in:nth-child(2) {
+    animation-delay: 560ms;
+  }
+  .letter-in:nth-child(3) {
+    animation-delay: 640ms;
+  }
+  .letter-in:nth-child(4) {
+    animation-delay: 720ms;
+  }
+  .letter-in:nth-child(5) {
+    animation-delay: 800ms;
+  }
+  .letter-in:nth-child(6) {
+    animation-delay: 880ms;
+  }
+
+  .hairline.draw {
+    transform-origin: center;
+    animation: hairline-draw 720ms var(--ease-invite) both;
+    animation-delay: var(--stagger, 0ms);
+  }
+
+  .bunny-float {
+    animation: bunny-idle 6.5s ease-in-out 900ms infinite;
+    will-change: transform;
+  }
+
+  .digit {
+    display: block;
+  }
+
+  .digit-tick {
+    display: block;
+    animation: digit-in 220ms var(--ease-smooth-out) both;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(3px);
+    animation: rise-in 640ms 1.8s var(--ease-smooth-out) both;
+  }
+
+  .reveal.is-in {
+    animation: rise-in 700ms var(--ease-invite) var(--reveal-delay, 0ms)
+      both;
+  }
+
+  .reveal.is-in .pin-pop {
+    animation: pin-pop 560ms var(--ease-smooth-out) 160ms both;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes paper-in {
+  from {
+    opacity: 0;
+    transform: translateY(22px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes script-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes letter-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.4em);
+    filter: blur(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes hairline-draw {
+  from {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  to {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+@keyframes bunny-idle {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-7px) rotate(-0.55deg);
+  }
+}
+
+@keyframes digit-in {
+  from {
+    opacity: 0.25;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pin-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.25);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paper-in,
+  .stagger-in,
+  .script-in,
+  .letter-in,
+  .hairline.draw,
+  .bunny-float,
+  .digit-tick,
+  .pin-pop,
+  .reveal,
+  .reveal.is-in {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  .bunny-float {
+    will-change: auto;
+  }
+}
