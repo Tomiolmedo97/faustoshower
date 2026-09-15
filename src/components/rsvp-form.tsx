@@ -62,12 +62,6 @@ export function RsvpForm() {
       window.location.assign(
         whatsappRsvpLink(name.trim(), choice, choice ? partySize : 0),
       );
-    } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "No se pudo guardar. Probá de nuevo.",
-      );
     } finally {
       setSaving(false);
     }
