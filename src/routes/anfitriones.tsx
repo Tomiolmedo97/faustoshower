@@ -16,14 +16,27 @@ type HostData =
       declined: RsvpRecord[];
       guestCount: number;
       letters: LetterRecord[];
+      loadError?: boolean;
     };
 
 export const Route = createFileRoute("/anfitriones")({
   loader: async (): Promise<HostData> => {
     const unlocked = await isHostSession();
     if (!unlocked) return { unlocked: false };
-    const [rsvps, letters] = await Promise.all([listRsvps(), listLetters()]);
-    return { unlocked: true, ...rsvps, letters };
+    try {
+      const [rsvps, letters] = await Promise.all([listRsvps(), listLetters()]);
+      return { unlocked: true, ...rsvps, letters };
+    } catch (err) {
+      console.error("[anfitriones] no se pudo cargar el álbum", err);
+      return {
+        unlocked: true,
+        confirmed: [],
+        declined: [],
+        guestCount: 0,
+        letters: [],
+        loadError: true,
+      };
+    }
   },
   component: HostPage,
 });
@@ -106,7 +119,7 @@ function HostAlbum({
 }: {
   data: Extract<HostData, { unlocked: true }>;
 }) {
-  const { confirmed, declined, guestCount, letters } = data;
+  const { confirmed, declined, guestCount, letters, loadError } = data;
 
   return (
     <main className="mx-auto flex min-h-svh w-full max-w-xl flex-col px-4 py-10 sm:px-6">
@@ -127,6 +140,12 @@ function HostAlbum({
             Baby Shower de Fausto
           </p>
         </header>
+
+        {loadError ? (
+          <p className="mt-8 text-center font-serif text-base text-brown" role="alert">
+            No se pudieron cargar las respuestas. Probá de nuevo en un momento.
+          </p>
+        ) : null}
 
         <dl className="mt-8 grid grid-cols-3 gap-3">
           <Stat label="Van" value={guestCount} />
