@@ -101,6 +101,8 @@ export const listRsvps = createServerFn({ method: "GET" }).handler(
     declined: RsvpRecord[];
     guestCount: number;
   }> => {
+    const { assertHost } = await import("./host.server");
+    assertHost();
     const sql = await getSql();
     const rows = await sql<{
       id: number;

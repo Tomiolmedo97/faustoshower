@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowUpRight, CalendarPlus, MapPin } from "lucide-react";
 import type { CSSProperties } from "react";
 import { Countdown } from "@/components/countdown";
+import { LetterForm } from "@/components/letter-form";
 import { Reveal } from "@/components/reveal";
 import { RsvpForm } from "@/components/rsvp-form";
 import { Button } from "@/components/ui/button";
@@ -124,6 +125,23 @@ function Home() {
             </p>
           </div>
           <RsvpForm />
+        </section>
+      </Reveal>
+
+      <Reveal delay={70}>
+        <section
+          id="carta"
+          className="invite-card mt-5 w-full scroll-mt-6 rounded-xl px-6 py-10 sm:px-10"
+        >
+          <div className="mb-8 text-center">
+            <p className="font-script text-4xl leading-none text-sage sm:text-5xl">
+              Una carta para Fausto
+            </p>
+            <p className="mt-3 font-serif text-base text-muted">
+              Un deseo o un consejo. Se la leemos cuando crezca.
+            </p>
+          </div>
+          <LetterForm />
         </section>
       </Reveal>
 

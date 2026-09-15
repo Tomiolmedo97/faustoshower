@@ -1,14 +1,112 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState, type FormEvent } from "react";
+import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { isHostSession, unlockHost } from "@/lib/host";
+import { listLetters, type LetterRecord } from "@/lib/letters";
 import { listRsvps, type RsvpRecord } from "@/lib/rsvp";
 
+type HostData =
+  | { unlocked: false }
+  | {
+      unlocked: true;
+      confirmed: RsvpRecord[];
+      declined: RsvpRecord[];
+      guestCount: number;
+      letters: LetterRecord[];
+    };
+
 export const Route = createFileRoute("/anfitriones")({
-  loader: () => listRsvps(),
+  loader: async (): Promise<HostData> => {
+    const unlocked = await isHostSession();
+    if (!unlocked) return { unlocked: false };
+    const [rsvps, letters] = await Promise.all([listRsvps(), listLetters()]);
+    return { unlocked: true, ...rsvps, letters };
+  },
   component: HostPage,
 });
 
 function HostPage() {
-  const { confirmed, declined, guestCount } = Route.useLoaderData();
+  const data = Route.useLoaderData();
+  if (!data.unlocked) return <HostLock />;
+  return <HostAlbum data={data} />;
+}
+
+function HostLock() {
+  const router = useRouter();
+  const [pin, setPin] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+
+  async function onSubmit(e: FormEvent) {
+    e.preventDefault();
+    setSaving(true);
+    setError(null);
+    try {
+      await unlockHost({ data: { pin } });
+      await router.invalidate();
+    } catch {
+      setError("Clave incorrecta");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return (
+    <main className="mx-auto flex min-h-svh w-full max-w-xl flex-col px-4 py-10 sm:px-6">
+      <Link
+        to="/"
+        className="mb-6 inline-flex items-center gap-2 self-start font-serif text-sm tracking-wide text-sage transition-colors hover:text-sage-deep"
+      >
+        <ArrowLeft className="size-4" />
+        Volver a la invitación
+      </Link>
+
+      <article className="invite-card rounded-xl px-6 py-10 sm:px-10">
+        <header className="text-center">
+          <p className="font-script text-4xl leading-none text-sage">
+            Anfitriones
+          </p>
+          <p className="mt-3 font-serif text-base text-muted">
+            Ingresá la clave para ver confirmaciones y cartas.
+          </p>
+        </header>
+
+        <form onSubmit={onSubmit} className="mx-auto mt-8 flex max-w-sm flex-col gap-5">
+          <div className="space-y-2">
+            <Label htmlFor="host-pin">Clave</Label>
+            <Input
+              id="host-pin"
+              name="pin"
+              type="password"
+              autoComplete="current-password"
+              value={pin}
+              onChange={(e) => setPin(e.target.value)}
+              required
+            />
+          </div>
+          {error && (
+            <p className="text-center font-serif text-sm text-brown" role="alert">
+              {error}
+            </p>
+          )}
+          <Button type="submit" disabled={pin.length < 1 || saving} className="w-full">
+            {saving ? "Entrando…" : "Entrar"}
+          </Button>
+        </form>
+      </article>
+    </main>
+  );
+}
+
+function HostAlbum({
+  data,
+}: {
+  data: Extract<HostData, { unlocked: true }>;
+}) {
+  const { confirmed, declined, guestCount, letters } = data;
 
   return (
     <main className="mx-auto flex min-h-svh w-full max-w-xl flex-col px-4 py-10 sm:px-6">
@@ -36,15 +134,68 @@ function HostPage() {
           <Stat label="No pueden" value={declined.length} />
         </dl>
 
-        <GuestList title="Asisten" people={confirmed} empty="Todavía nadie confirmó." />
+        <GuestList
+          title="Asisten"
+          people={confirmed}
+          empty="Todavía nadie confirmó."
+        />
         <GuestList
           title="No asisten"
           people={declined}
           empty="Nadie avisó que no puede venir."
         />
       </article>
+
+      <article className="invite-card mt-5 rounded-xl px-6 py-10 sm:px-10">
+        <header className="text-center">
+          <p className="font-script text-4xl leading-none text-sage">
+            Cartas para Fausto
+          </p>
+          <p className="mt-3 font-serif text-base text-muted">
+            {letters.length === 0
+              ? "Todavía no llegó ninguna."
+              : letters.length === 1
+                ? "1 carta guardada"
+                : `${letters.length} cartas guardadas`}
+          </p>
+        </header>
+
+        {letters.length === 0 ? (
+          <p className="mt-8 text-center font-serif text-base text-muted">
+            Cuando un invitado deje un deseo, aparece acá.
+          </p>
+        ) : (
+          <ul className="mt-8 space-y-5">
+            {letters.map((letter) => (
+              <li
+                key={letter.id}
+                className="rounded-lg bg-paper-deep px-5 py-5 shadow-[inset_0_0_0_1px_color-mix(in_oklab,var(--color-sage)_16%,transparent)]"
+              >
+                <p className="font-serif text-sm font-medium tracking-[0.16em] text-sage uppercase">
+                  {letter.authorName}
+                </p>
+                <p className="mt-3 font-serif text-lg leading-relaxed whitespace-pre-wrap text-ink">
+                  {letter.body}
+                </p>
+                <p className="mt-4 font-serif text-xs tracking-invite text-muted uppercase">
+                  {formatLetterDate(letter.createdAt)}
+                </p>
+              </li>
+            ))}
+          </ul>
+        )}
+      </article>
     </main>
   );
+}
+
+function formatLetterDate(iso: string) {
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return "";
+  return date.toLocaleDateString("es-AR", {
+    day: "numeric",
+    month: "long",
+  });
 }
 
 function Stat({ label, value }: { label: string; value: number }) {
